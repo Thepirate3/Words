@@ -1,0 +1,66 @@
+Tema 3
+
+In implementarea acestei teme am utilizat structura unui arbore de tip trie, ai carui copii sunt retinuti intr-un vector de pointeri catre noile noduri.
+
+Au fost implementate urmatoarele functii:
+- void* init();
+
+ Functia de initializare a unui nod, aceasta alocand spatiu si initializand valorile nodului nou alocat.
+
+- int caut_litera(TNod nod,char litera);
+
+ Aceasta functie cauta in vectorul de fii a nodul oferit ca parametru litera primita de asemenea ca parametru. Daca litera este gasita se returneaza pozita fiului ce o contine daca nu se returneaza codul de eroare -1;
+
+- void sortare(TNod arb);
+ 
+ Functie ce sorteaza vectorul de fii in functie de litera atribuita.Implementarea este un bubble sort optimizat folosind un flag care opreste rularea atunci cand s a ajuns deja la vectorul sortat.
+
+- void insert(TNod arbore, char *cuvant);
+
+ Functia de insertie a unui nou cuvant in arbore,care ruleaza pentru fiecare litera a cuvantului.Daca litera curenta nu este in arbore atunci se realoca vectorul de fii si se introduce litera in arbore,daca aceasta se afla in arbore se avanseaza in jos pe arbore pana la finalul cuvatului,nodul ce contine ultima litera va fi marcat ca fiind finalul unui cuvant(nod->end = 1).
+
+- void reorganizare(TNod arb,int count);
+
+ Aceasta functie este folostia pentru reorganizarea vectorului de fii dupa eliminarea unui nod din vector,pentru a nu avea noduri nule.
+
+- void remove1(TNod arb,char *cuvant,int *eliminat);
+
+ Functie ce elimina cuvantul din arbore prin avansul recursiv pana cand se ajunge la finalul cuvantului.Daca cuvantul nu se de eliminat nu se afla in arbore atunci se opreste apelul functiei.Altfel daca ultimul nod nu are fii atunci il marcam ca fiind de eliminat prin transmiterea parametrului eliminat,daca nu doar se marcheaza proprietatea de end ca fiind 0.Daca se ajunge in nodul tata atunci rularea este oprita,altfel se verifica daca trebuie sa eliminam fiul si daca nu cumva trebuie sa modificam proprietatea nodului curent astfel incat sa nu il eliminam.
+
+- void find(TNod arb, char *cuvant,FILE *f);
+
+  Functia de find doreste sa gaseasca cuvantul dat ca parametru in trie. Astfel verificam daca am ajuns la ultima litera de cautat si daca am ajuns verificam daca este in trie si daca nodul ce o contine este si sfarsit de cuvant.Altfel pentru celelalte litere doar se avanseaza sau daca literea nu este gasita doar se opreste rularea functiei.
+
+- void find_prefix(TNod arb,char *cuvant,FILE *f);
+
+ Cautarea prefixului este asemanatoare cu cea a cuvantului doar ca de data aceasta avansul se face continuu si se memoreaza intr-o sir auxiliar care la final va fi returnat. Daca sirul este nul la terminarea parcurgerii atunci nu este gasit niciun prefix.
+
+- void printare(TNod arb,char *cuv,char *cuvinit,FILE *f);
+	
+ Functie utilizata pentru parcurgerea recursiva a arborelui si afiseara tuturor cuvintelor intalnite.
+
+- void find_words(TNod arb, char *cuvant,FILE *f);
+
+	Functie de cautare propriu zisa a tuturor cuvintelor care contin prefixul indicat ca parametru.Daca lungimea prefixului este 0 atunci afisarea va incepe din nodul tata astfel fiind afisate toate cuvintele din arbore. Astfel se apeleaza functia de printare pentru fiecare fiu al nodului tata, fiind actualizat in acelasi timp si prefixul de care depinde functia de printare, altfel daca prefixul initial este un cuvant se va incepe afisarerea de la nodul care contine ultima litera a prefixului in jos.
+
+
+- char *read(FILE *f);
+
+ Functia de citire a cuvintelor din fisier, care daca cuvantul de citit este finalul unui rand atunci se va returna cuvantul nul "",iar daca nu se va citi cuvantul litera cu litera pana cand se intalneste un spatiu,finalul unui rand sau finalul fisierului. Daca cuvantul nou format este find_all_with_prefix,sau mean_length, aceste doua operatii putand primi ca parametru stringul nul,se va realiza intoarcerea cu ajutorul functiei fseek inapoi cu o pozitie in fisier, deoarece daca cumva parametrul citit este endline, urmatoarea citire ar fi numele urmatoarei operatii si nu numele prefixului, de aceea este necesara aceasta intoarcere.
+
+- void suma_cuv(TNod arb,int *suma,int *nr_cuv,int *lungime);
+
+ Functia suma actualizeaza prin efect lateral valorile sumei lungimii tuturor cuvintelor, si numarul total de cuvinte ce contin prefixul dat.Astfel functia va incrementa aceste valori doar atunci cand nodul curent este finalul unui cuvant,altfel se va face apelul recursiv pentru fiecare fiu al nodului curent,la fiecare noua parcurgere a ciclului for vom incrementa lungimea cuvantului curent dar o si vom decrementa deoarece aceasta trebuie sa fie resetata pentru fiecare cuvant in parte.
+
+- void mean_length(TNod arb,char *prefix,FILE *f);
+
+ Functia propriu zisa care apeleaza functia suma pentru a afla parametrii suma si numarul de fii.Astfel daca prefixul este cuvantul nul "" vom calcula media pentru intreg arborele deci functia suma va fi apelata pentru toti fii nodului tata si nu doar pentru un nod de pornire stabilit prin parcurgerea pana la finalul prefixului.
+ 
+- void Eliberare(TNod arb);
+
+ Functia ce sterge intreb arborele prin apelul recursiv pentru fiecare fiu iar la final este sters nodul tata.
+
+In maine se regasesc doar citirea numarului de operatii deschiderea si inchiderea fisierelor si apelul fiecare functii,depinzand de alegera operatiei.
+
+
+
